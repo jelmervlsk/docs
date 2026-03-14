@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book2befit Docs — Implementation Plan</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f9fafb;
+      --surface:   #ffffff;
+      --border:    #e5e7eb;
+      --primary:   #16a34a;
+      --primary-l: #dcfce7;
+      --text:      #111827;
+      --muted:     #6b7280;
+      --tag-blue:  #dbeafe;
+      --tag-blue-t:#1d4ed8;
+      --tag-amber: #fef3c7;
+      --tag-amber-t:#92400e;
+      --tag-rose:  #ffe4e6;
+      --tag-rose-t:#9f1239;
+      --tag-green: #dcfce7;
+      --tag-green-t:#15803d;
+      --tag-purple:#f3e8ff;
+      --tag-purple-t:#6b21a8;
+      --radius:    10px;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Header ── */
+    .header {
+      max-width: 860px;
+      margin: 0 auto 48px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .header-left h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .header-left p {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 15px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--primary-l);
+      color: var(--primary);
+      white-space: nowrap;
+      margin-top: 4px;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); }
+
+    /* ── Grid layout ── */
+    .grid {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .icon-green  { background: var(--tag-green);  }
+    .icon-blue   { background: var(--tag-blue);   }
+    .icon-amber  { background: var(--tag-amber);  }
+    .icon-purple { background: var(--tag-purple); }
+    .icon-rose   { background: var(--tag-rose);   }
+
+    /* ── Tag ── */
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .tag-blue   { background: var(--tag-blue);   color: var(--tag-blue-t);   }
+    .tag-amber  { background: var(--tag-amber);  color: var(--tag-amber-t);  }
+    .tag-green  { background: var(--tag-green);  color: var(--tag-green-t);  }
+    .tag-purple { background: var(--tag-purple); color: var(--tag-purple-t); }
+    .tag-rose   { background: var(--tag-rose);   color: var(--tag-rose-t);   }
+
+    /* ── File tree ── */
+    .file-tree {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12.5px;
+      line-height: 1.9;
+      color: var(--text);
+    }
+    .file-tree .folder { color: var(--primary); font-weight: 600; }
+    .file-tree .file   { color: var(--muted); }
+    .file-tree .new    { color: var(--tag-blue-t); font-weight: 600; }
+    .file-tree .new::after {
+      content: ' NEW';
+      font-size: 9px;
+      background: var(--tag-blue);
+      color: var(--tag-blue-t);
+      padding: 1px 5px;
+      border-radius: 4px;
+      margin-left: 6px;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+    .file-tree .mod::after {
+      content: ' EDIT';
+      font-size: 9px;
+      background: var(--tag-amber);
+      color: var(--tag-amber-t);
+      padding: 1px 5px;
+      border-radius: 4px;
+      margin-left: 6px;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    /* ── Page list ── */
+    .page-list { list-style: none; display: grid; gap: 10px; }
+    .page-item {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      align-items: start;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .page-num {
+      width: 22px; height: 22px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .page-meta strong { display: block; font-weight: 600; margin-bottom: 2px; }
+    .page-meta span   { color: var(--muted); font-size: 12px; }
+    .page-tags { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+
+    /* ── Component palette ── */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 10px;
+    }
+    .component-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+    }
+    .component-chip strong { display: block; font-weight: 600; margin-bottom: 2px; }
+    .component-chip span   { color: var(--muted); font-size: 11.5px; }
+
+    /* ── Roadmap ── */
+    .roadmap { display: grid; gap: 0; }
+    .roadmap-phase {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 0 20px;
+      position: relative;
+    }
+    .roadmap-phase::before {
+      content: '';
+      position: absolute;
+      left: 89px;
+      top: 28px;
+      bottom: -10px;
+      width: 1px;
+      background: var(--border);
+    }
+    .roadmap-phase:last-child::before { display: none; }
+    .phase-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding-top: 14px;
+      text-align: right;
+    }
+    .phase-body {
+      padding: 12px 0 24px 20px;
+      border-left: 2px solid transparent;
+    }
+    .phase-body h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .phase-body ul { list-style: none; display: grid; gap: 4px; }
+    .phase-body li { color: var(--muted); font-size: 12.5px; }
+    .phase-body li::before { content: '→ '; color: var(--primary); }
+
+    /* ── Design system ── */
+    .ds-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .ds-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12.5px;
+    }
+    .ds-item strong { display: block; font-weight: 600; margin-bottom: 4px; }
+    .ds-item span   { color: var(--muted); }
+    .swatch {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* ── Divider ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .ds-grid { grid-template-columns: 1fr; }
+      .header  { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Book2befit — Docs Implementation Plan</h1>
+      <p>Information architecture, design system, and build roadmap for the Mintlify documentation site.</p>
+    </div>
+    <div style="flex-shrink:0; text-align:right;">
+      <div class="badge"><span class="dot"></span> v1.0 · March 2026</div>
+      <div style="color:var(--muted); font-size:12px; margin-top:8px;">Awaiting approval</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- ── 1. File Structure ── -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="icon icon-green">🗂</div>
+          Final File Structure
+        </div>
+        <span class="tag tag-blue">Target state</span>
+      </div>
+      <div class="file-tree">
+        <div><span class="folder">/Docs</span></div>
+        <div>&nbsp;&nbsp;├── <span class="mod">docs.json</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← branding, nav, colors</div>
+        <div>&nbsp;&nbsp;├── <span class="mod">index.mdx</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Welcome / value prop</div>
+        <div>&nbsp;&nbsp;├── <span class="mod">quickstart.mdx</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Studio owner onboarding</div>
+        <div>&nbsp;&nbsp;│</div>
+        <div>&nbsp;&nbsp;├── <span class="folder">core-features/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← NEW folder</div>
+        <div>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="new">sessions.mdx</span></div>
+        <div>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="new">bookings.mdx</span></div>
+        <div>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="new">clients.mdx</span></div>
+        <div>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="new">payments.mdx</span></div>
+        <div>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="new">team.mdx</span></div>
+        <div>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="new">public-portal.mdx</span></div>
+        <div>&nbsp;&nbsp;│</div>
+        <div>&nbsp;&nbsp;├── <span class="folder">reference/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← NEW folder</div>
+        <div>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="new">tiers.mdx</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Starter/Growth/Business/Enterprise</div>
+        <div>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="new">database-schema.mdx</span></div>
+        <div>&nbsp;&nbsp;│</div>
+        <div>&nbsp;&nbsp;└── <span class="file">snippets/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← reusable blocks (tier badges etc.)</div>
+      </div>
+      <div style="margin-top:14px; font-size:12px; color:var(--muted);">
+        Existing <code>essentials/</code>, <code>ai-tools/</code>, and <code>api-reference/</code> folders are removed — replaced entirely with Book2befit-specific content.
+      </div>
+    </div>
+
+    <!-- ── 2. Navigation Architecture ── -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="icon icon-blue">🧭</div>
+          Navigation Architecture (docs.json)
+        </div>
+        <span class="tag tag-amber">3 tabs</span>
+      </div>
+      <div class="section-title">Tab 1 — Getting Started</div>
+      <ul class="page-list">
+        <li class="page-item">
+          <div class="page-num">1</div>
+          <div class="page-meta">
+            <strong>index.mdx — Welcome</strong>
+            <span>Hero headline, 4 quick-start Cards (Sessions, Clients, Payments, Portal), link to Quickstart</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-green">EDIT</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">2</div>
+          <div class="page-meta">
+            <strong>quickstart.mdx — Get your studio live</strong>
+            <span>Steps component: Create account → Set up location → Add activities → Publish booking page. ~5 min read.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-green">EDIT</span></div>
+        </li>
+      </ul>
+
+      <hr style="margin: 18px 0;" />
+      <div class="section-title">Tab 2 — Core Features</div>
+      <ul class="page-list">
+        <li class="page-item">
+          <div class="page-num">1</div>
+          <div class="page-meta">
+            <strong>core-features/sessions.mdx — Sessions & Scheduling</strong>
+            <span>Create sessions, recurring schedules, capacity, waitlist, cancellation policy. Tabs: Group / Private / Recurring.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-blue">NEW</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">2</div>
+          <div class="page-meta">
+            <strong>core-features/bookings.mdx — Bookings</strong>
+            <span>Dashboard booking flow, multi-seat, confirmation emails, cancellation & refund policy, waitlist promotion.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-blue">NEW</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">3</div>
+          <div class="page-meta">
+            <strong>core-features/clients.mdx — Client Management</strong>
+            <span>Client profiles, merge duplicates, booking history, notes, invite flow.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-blue">NEW</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">4</div>
+          <div class="page-meta">
+            <strong>core-features/payments.mdx — Payments & Invoices</strong>
+            <span>Stripe Connect setup, online vs. location payment, invoices, credit notes, refunds, receipts.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-blue">NEW</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">5</div>
+          <div class="page-meta">
+            <strong>core-features/team.mdx — Team & Roles</strong>
+            <span>Owner / Admin / Coach roles, invite flow, coach schedule view, permission matrix table.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-blue">NEW</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">6</div>
+          <div class="page-meta">
+            <strong>core-features/public-portal.mdx — Client Portal</strong>
+            <span>Public booking page (/{slug}/book), products/memberships, my-bookings, feedback, calendar export.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-blue">NEW</span></div>
+        </li>
+      </ul>
+
+      <hr style="margin: 18px 0;" />
+      <div class="section-title">Tab 3 — Reference</div>
+      <ul class="page-list">
+        <li class="page-item">
+          <div class="page-num">1</div>
+          <div class="page-meta">
+            <strong>reference/tiers.mdx — Plan Tiers</strong>
+            <span>Side-by-side feature matrix: Starter · Growth · Business · Enterprise. Sourced from migration 019.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-blue">NEW</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">2</div>
+          <div class="page-meta">
+            <strong>reference/database-schema.mdx — Database Reference</strong>
+            <span>Key public tables: organizations, sessions, bookings, activities, client_profiles, session_feedback. Column types, RLS notes.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-blue">NEW</span></div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ── 3. Mintlify Component Usage ── -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="icon icon-purple">🧩</div>
+          Mintlify Component Usage Plan
+        </div>
+        <span class="tag tag-purple">Built-in only</span>
+      </div>
+      <div class="component-grid">
+        <div class="component-chip">
+          <strong>&lt;Card&gt; / &lt;CardGroup&gt;</strong>
+          <span>index.mdx feature overview, quickstart entry points</span>
+        </div>
+        <div class="component-chip">
+          <strong>&lt;Steps&gt;</strong>
+          <span>quickstart.mdx onboarding flow, payments setup, Stripe Connect</span>
+        </div>
+        <div class="component-chip">
+          <strong>&lt;Tabs&gt;</strong>
+          <span>sessions.mdx (Group / Private / Recurring), payments.mdx (Online / In-person)</span>
+        </div>
+        <div class="component-chip">
+          <strong>&lt;Note&gt;</strong>
+          <span>Tier gates ("Growth plan required"), important caveats</span>
+        </div>
+        <div class="component-chip">
+          <strong>&lt;Tip&gt;</strong>
+          <span>Best practice callouts throughout feature docs</span>
+        </div>
+        <div class="component-chip">
+          <strong>&lt;Warning&gt;</strong>
+          <span>Destructive actions (delete org, cancel subscription)</span>
+        </div>
+        <div class="component-chip">
+          <strong>&lt;Accordion&gt;</strong>
+          <span>FAQ-style edge cases at bottom of feature pages</span>
+        </div>
+        <div class="component-chip">
+          <strong>Code blocks</strong>
+          <span>Public booking URL format, webhook payloads, SQL examples</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 4. Design System ── -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="icon icon-amber">🎨</div>
+          Design System — docs.json Updates
+        </div>
+        <span class="tag tag-amber">Branding</span>
+      </div>
+      <div class="ds-grid">
+        <div class="ds-item">
+          <strong>Name</strong>
+          <span>Book2befit — from "Mint Starter Kit"</span>
+        </div>
+        <div class="ds-item">
+          <strong>Theme</strong>
+          <span>mint (keep — clean, minimal, matches homepage)</span>
+        </div>
+        <div class="ds-item">
+          <strong>Primary color</strong>
+          <span><span class="swatch" style="background:#16a34a;"></span>#16A34A — sage green (matches homepage OKLCH primary)</span>
+        </div>
+        <div class="ds-item">
+          <strong>Light accent</strong>
+          <span><span class="swatch" style="background:#22c55e;"></span>#22C55E</span>
+        </div>
+        <div class="ds-item">
+          <strong>Dark accent</strong>
+          <span><span class="swatch" style="background:#15803d;"></span>#15803D</span>
+        </div>
+        <div class="ds-item">
+          <strong>Logo</strong>
+          <span>Replace Mintlify SVGs with Book2befit logo (light + dark variant)</span>
+        </div>
+        <div class="ds-item">
+          <strong>Favicon</strong>
+          <span>Replace with Book2befit favicon.svg</span>
+        </div>
+        <div class="ds-item">
+          <strong>Navbar CTA</strong>
+          <span>"Open App" → app.book2befit.com</span>
+        </div>
+        <div class="ds-item">
+          <strong>Support link</strong>
+          <span>mailto:support@book2befit.com</span>
+        </div>
+        <div class="ds-item">
+          <strong>Footer socials</strong>
+          <span>Replace Mintlify socials with Book2befit handles</span>
+        </div>
+        <div class="ds-item">
+          <strong>Contextual options</strong>
+          <span>Keep: copy, view, claude, cursor — remove: chatgpt, perplexity</span>
+        </div>
+        <div class="ds-item">
+          <strong>Tone of voice</strong>
+          <span>Direct, concise, no jargon. Studio owner as the reader, not a developer.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 5. Build Roadmap ── -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="icon icon-rose">🗺</div>
+          Build Roadmap
+        </div>
+        <span class="tag tag-rose">4 phases</span>
+      </div>
+      <div class="roadmap">
+        <div class="roadmap-phase">
+          <div class="phase-label">Phase 1</div>
+          <div class="phase-body">
+            <h4>Foundation</h4>
+            <ul>
+              <li>Update docs.json (name, colors, nav tabs, navbar CTA, footer)</li>
+              <li>Rewrite index.mdx (value prop + 4 feature Cards)</li>
+              <li>Rewrite quickstart.mdx (Steps: account → location → activities → publish)</li>
+              <li>Delete stale Mintlify boilerplate (essentials/, ai-tools/, api-reference/)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="roadmap-phase">
+          <div class="phase-label">Phase 2</div>
+          <div class="phase-body">
+            <h4>Core Feature Docs</h4>
+            <ul>
+              <li>core-features/sessions.mdx — Tabs (Group/Private/Recurring), capacity, waitlist</li>
+              <li>core-features/bookings.mdx — multi-seat, confirmation, cancellation flow</li>
+              <li>core-features/clients.mdx — profiles, merge, invite</li>
+              <li>core-features/payments.mdx — Stripe Connect Steps, invoices, refunds</li>
+            </ul>
+          </div>
+        </div>
+        <div class="roadmap-phase">
+          <div class="phase-label">Phase 3</div>
+          <div class="phase-body">
+            <h4>Portal & Team</h4>
+            <ul>
+              <li>core-features/team.mdx — roles table, invite Steps, coach schedule</li>
+              <li>core-features/public-portal.mdx — booking page URL, products, calendar export</li>
+            </ul>
+          </div>
+        </div>
+        <div class="roadmap-phase">
+          <div class="phase-label">Phase 4</div>
+          <div class="phase-body">
+            <h4>Reference & Polish</h4>
+            <ul>
+              <li>reference/tiers.mdx — Starter/Growth/Business/Enterprise feature matrix</li>
+              <li>reference/database-schema.mdx — public tables, column types, RLS notes</li>
+              <li>Final review: tone consistency, Note/Tip callouts, mobile check</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 6. Key Decisions ── -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="icon icon-blue">💡</div>
+          Key Decisions & Constraints
+        </div>
+      </div>
+      <ul class="page-list">
+        <li class="page-item">
+          <div class="page-num">1</div>
+          <div class="page-meta">
+            <strong>Audience: Studio owners, not developers</strong>
+            <span>Write for a fitness professional setting up their first booking software. Avoid SQL/API jargon in feature docs — save technical depth for the Reference tab only.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-green">Design</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">2</div>
+          <div class="page-meta">
+            <strong>No OpenAPI spec yet — use MDX pages for API reference</strong>
+            <span>The v2 app uses Next.js API routes + Supabase RPC — not a REST API with a spec file. The Reference tab documents the database schema and tier gates instead.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-amber">Scope</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">3</div>
+          <div class="page-meta">
+            <strong>Tier gates surface throughout feature docs</strong>
+            <span>Each feature page will use a &lt;Note&gt; callout where applicable: e.g., "Recurring sessions require the Growth plan or above." Sourced from migration 019.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-purple">UX</span></div>
+        </li>
+        <li class="page-item">
+          <div class="page-num">4</div>
+          <div class="page-meta">
+            <strong>Logo assets to be provided</strong>
+            <span>The plan assumes Book2befit light/dark SVG logos will replace the current Mintlify placeholders in /logo/. If not ready, the text name is used as fallback.</span>
+          </div>
+          <div class="page-tags"><span class="tag tag-rose">Asset</span></div>
+        </li>
+      </ul>
+    </div>
+
+  </div><!-- /grid -->
+
+</body>
+</html>
