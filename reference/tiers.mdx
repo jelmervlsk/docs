@@ -1,0 +1,57 @@
+---
+title: "Plan Tiers"
+description: "Compare Starter, Growth, Business, and Enterprise — features and limits at a glance."
+---
+
+Book2befit is available in four tiers. All plans include the core booking and scheduling engine. Higher tiers unlock advanced features and higher limits.
+
+## Feature matrix
+
+| Feature | Starter | Growth | Business | Enterprise |
+|---|:---:|:---:|:---:|:---:|
+| Sessions & scheduling | ✓ | ✓ | ✓ | ✓ |
+| Public booking page | ✓ | ✓ | ✓ | ✓ |
+| Client management | ✓ | ✓ | ✓ | ✓ |
+| Manual bookings | ✓ | ✓ | ✓ | ✓ |
+| Waitlists | ✓ | ✓ | ✓ | ✓ |
+| Payments (Stripe) | ✓ | ✓ | ✓ | ✓ |
+| Invoices & receipts | ✓ | ✓ | ✓ | ✓ |
+| Basic analytics | ✓ | ✓ | ✓ | ✓ |
+| **Team members** | Up to 3 | Unlimited | Unlimited | Unlimited |
+| **Recurring sessions** | — | ✓ | ✓ | ✓ |
+| **Products & memberships** | — | ✓ | ✓ | ✓ |
+| **Custom branding** | — | ✓ | ✓ | ✓ |
+| **Advanced analytics & reporting** | — | ✓ | ✓ | ✓ |
+| **Calendar export** | — | ✓ | ✓ | ✓ |
+| **Priority support** | — | — | ✓ | ✓ |
+| **API access** | — | — | ✓ | ✓ |
+| **Custom contract & SLA** | — | — | — | ✓ |
+| **Dedicated onboarding** | — | — | — | ✓ |
+
+## Tier gates in the app
+
+Features locked to a higher tier show an upgrade prompt rather than an error. For example:
+
+- On **Starter**: the **+ Recurring Sessions** button is hidden on the Sessions page.
+- On **Starter**: navigating to `/products` shows an upgrade prompt instead of your product list.
+- On **Starter**: the **Branding** tab in Settings is not available.
+
+<Note>
+  Tier gates are enforced at the API level — not just in the UI. Calls to gated features from lower-tier accounts return a permissions error.
+</Note>
+
+## Changing your plan
+
+Go to **Settings → Billing** to upgrade or downgrade your plan. Changes take effect immediately on upgrade. Downgrades take effect at the end of the current billing period.
+
+<Accordion title="Is there a free trial?">
+  Yes — new organizations start on a free trial that includes Growth-level features. No credit card required to start.
+</Accordion>
+
+<Accordion title="What happens to my data if I downgrade?">
+  Your data is never deleted on a downgrade. Features locked to your previous tier become read-only — existing recurring sessions remain visible but you cannot create new ones until you upgrade again.
+</Accordion>
+
+<Accordion title="Is annual billing available?">
+  Yes — annual billing is available and offers a discount compared to monthly. Switch between monthly and annual in **Settings → Billing**.
+</Accordion>

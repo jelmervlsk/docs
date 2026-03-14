@@ -1,0 +1,79 @@
+---
+title: "Team & Roles"
+description: "Invite coaches and admins, manage permissions, and assign schedules."
+---
+
+Book2befit supports multiple team members with distinct roles. Each role controls what a person can see and do inside the dashboard.
+
+## Roles
+
+| Role | What they can do |
+|---|---|
+| **Owner** | Full access. Manages billing, settings, team, and all data. Only one owner per organization. |
+| **Admin** | Same as Owner except cannot manage billing or delete the organization. |
+| **Coach** | Views their own schedule, can check in clients, and (if enabled) create sessions. Cannot access payments, settings, or client management. |
+
+## Inviting a team member
+
+<Steps>
+  <Step title="Go to Team">
+    Navigate to **Team** in the dashboard sidebar.
+  </Step>
+  <Step title="Click + Invite Member">
+    Enter the team member's email address and select their role (Admin or Coach).
+  </Step>
+  <Step title="They accept the invite">
+    The invitee receives an email with a link to accept. Once accepted, they appear in your team list with their assigned role.
+  </Step>
+</Steps>
+
+<Tip>
+  Invite links expire after 7 days. If a team member doesn't receive the email, check their spam folder or resend the invite from the Team page.
+</Tip>
+
+## Coach schedule view
+
+Coaches have access to **My Schedule** — a personal view of only the sessions assigned to them. They can:
+
+- See upcoming sessions and booked clients
+- Check clients in or mark no-shows
+- Create sessions (if the org setting is enabled)
+
+Coaches do **not** see other coaches' sessions, client contact details, payment data, or settings.
+
+## Enabling coach session creation
+
+By default, coaches cannot create new sessions. To change this:
+
+1. Go to **Settings → Team**.
+2. Toggle **Allow coaches to create sessions** ON.
+
+Coaches can create sessions but cannot delete them — that remains Owner/Admin only.
+
+## Removing a team member
+
+Open the **Team** page, find the member, and click **Remove**. Their account is not deleted — they simply lose access to your organization. If they have another organization, they retain access to that.
+
+## Role permission matrix
+
+| Feature | Owner | Admin | Coach |
+|---|---|---|---|
+| Dashboard & analytics | ✓ | ✓ | — |
+| Sessions (view) | ✓ | ✓ | Own only |
+| Sessions (create) | ✓ | ✓ | If enabled |
+| Sessions (delete) | ✓ | ✓ | — |
+| Bookings | ✓ | ✓ | View only |
+| Clients | ✓ | ✓ | — |
+| Payments & invoices | ✓ | ✓ | — |
+| Products | ✓ | ✓ | — |
+| Team management | ✓ | ✓ | — |
+| Settings | ✓ | ✓ | — |
+| Billing & plan | ✓ | — | — |
+
+<Accordion title="Can a Coach be promoted to Admin?">
+  Not directly — you'd need to remove the team member and re-invite them with the Admin role. Role changes are not editable in place.
+</Accordion>
+
+<Accordion title="What happens to sessions if I remove a coach?">
+  Their sessions remain scheduled and visible in the dashboard. You can reassign the sessions to another coach from the session's edit panel.
+</Accordion>

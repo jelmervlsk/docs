@@ -1,0 +1,155 @@
+---
+title: "Database Schema"
+description: "Key public tables and columns for developers querying the Book2befit Supabase database."
+---
+
+The Book2befit backend is built on **Supabase** (PostgreSQL). This reference covers the tables most useful for read-only integrations, analytics, and public data fetches.
+
+<Note>
+  All tables use **Row Level Security (RLS)**. Public clients (using the publishable key) can only read rows that are explicitly exposed by RLS policies. Never use a service role key in client-side code.
+</Note>
+
+## organizations
+
+Represents a studio or fitness business. Each organization has one owner and maps to a public booking page slug.
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | `uuid` | Primary key |
+| `name` | `text` | Studio display name |
+| `slug` | `text` | Public URL segment — `app.book2befit.com/[slug]` |
+| `timezone` | `text` | IANA timezone (e.g. `Europe/Amsterdam`) |
+| `tier_id` | `uuid` | FK → `account_tiers.id` |
+| `subscription_status` | `text` | `inactive` · `active` · `past_due` · `canceled` · `trialing` |
+
+## sessions
+
+A single schedulable class or appointment.
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | `uuid` | Primary key |
+| `organization_id` | `uuid` | FK → `organizations.id` |
+| `activity_id` | `uuid` | FK → `activities.id` |
+| `coach_id` | `uuid` | FK → team member user ID |
+| `location_id` | `uuid` | FK → `locations.id` |
+| `schedule_id` | `uuid` | FK → recurring schedule (nullable) |
+| `start_time` | `timestamptz` | Session start (UTC) |
+| `end_time` | `timestamptz` | Session end (UTC) |
+| `capacity` | `integer` | Max bookings allowed |
+| `current_bookings` | `integer` | Live booking count |
+| `status` | `text` | `scheduled` · `cancelled` · `completed` |
+| `allow_public_booking` | `boolean` | Visible on public portal |
+| `price_cents` | `integer` | Price in smallest currency unit |
+| `allow_online_payment` | `boolean` | Stripe payment enabled |
+| `allow_location_payment` | `boolean` | In-person payment enabled |
+| `notes` | `text` | Internal notes |
+
+## bookings
+
+A confirmed reservation linking a client to a session.
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | `uuid` | Primary key |
+| `session_id` | `uuid` | FK → `sessions.id` |
+| `organization_id` | `uuid` | FK → `organizations.id` |
+| `status` | `text` | `confirmed` · `cancelled` · `checked_in` · `no_show` |
+| `seats` | `integer` | Number of seats booked |
+| `created_at` | `timestamptz` | When the booking was made |
+
+## activities
+
+The class types offered by a studio (e.g. HIIT, Yoga, Pilates).
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | `uuid` | Primary key |
+| `organization_id` | `uuid` | FK → `organizations.id` |
+| `name` | `text` | Activity display name |
+| `description` | `text` | Optional description |
+| `default_duration_minutes` | `integer` | Default session length |
+| `default_participants` | `integer` | Default capacity |
+| `category` | `text` | Free-text category (e.g. `Fitness`, `Pilates`) |
+| `difficulty_level` | `text` | Optional (e.g. `Beginner`, `Advanced`) |
+| `is_private` | `boolean` | Hidden from public portal if `true` |
+| `show_on_public_page` | `boolean` | Controls public visibility |
+| `is_active` | `boolean` | Soft-delete flag |
+
+## client_profiles
+
+Studio clients. Linked to an auth user via `user_id`.
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | `uuid` | Primary key |
+| `organization_id` | `uuid` | FK → `organizations.id` |
+| `user_id` | `uuid` | FK → Supabase auth user |
+| `full_name` | `text` | Display name |
+| `email` | `text` | Contact email |
+| `phone` | `text` | Optional phone number |
+| `created_at` | `timestamptz` | Profile creation date |
+
+## session_feedback
+
+Post-session ratings and comments left by clients.
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | `uuid` | Primary key |
+| `organization_id` | `uuid` | FK → `organizations.id` |
+| `session_id` | `uuid` | FK → `sessions.id` |
+| `booking_id` | `uuid` | FK → `bookings.id` |
+| `client_profile_id` | `uuid` | FK → `client_profiles.id` |
+| `rating` | `integer` | 1–5 star rating |
+| `comment` | `text` | Optional written review |
+| `session_name` | `text` | Denormalized session name at time of feedback |
+| `coach_name` | `text` | Denormalized coach name |
+| `client_name` | `text` | Denormalized client name |
+| `session_date` | `timestamptz` | When the session took place |
+
+## account_tiers
+
+Subscription plan definitions. Readable by all authenticated users.
+
+| Column | Type | Description |
+|---|---|---|
+| `id` | `uuid` | Primary key |
+| `name` | `text` | Display name (e.g. `Growth`) |
+| `slug` | `text` | Machine name (e.g. `growth`) |
+| `description` | `text` | Short plan description |
+| `price_cents` | `integer` | Monthly price in smallest currency unit |
+| `features` | `jsonb` | Array of feature strings |
+| `is_active` | `boolean` | Whether this tier is currently offered |
+
+## Querying with the public client
+
+Use the **publishable key** (not the service role key) for any public-facing data fetches. Example using the Supabase JS client:
+
+```typescript
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+)
+
+// Fetch upcoming public sessions for a studio
+const { data } = await supabase
+  .from('sessions')
+  .select(`
+    id, start_time, end_time, capacity, current_bookings, price_cents,
+    activities ( name, category ),
+    locations ( name )
+  `)
+  .eq('organization_id', ORG_ID)
+  .eq('allow_public_booking', true)
+  .eq('status', 'scheduled')
+  .gte('start_time', new Date().toISOString())
+  .order('start_time')
+  .limit(8)
+```
+
+<Warning>
+  Never expose or commit your Supabase **service role key**. It bypasses all RLS policies and grants full database access.
+</Warning>

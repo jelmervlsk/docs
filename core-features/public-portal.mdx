@@ -1,0 +1,119 @@
+---
+title: "Client Portal"
+description: "Your public booking page — what clients see, how they book, pay, and manage their schedule."
+---
+
+Every Book2befit studio gets a public booking page at:
+
+```
+app.book2befit.com/[your-slug]
+```
+
+Clients can browse sessions, book, pay online, manage their own bookings, and purchase memberships — no app to download, no login required to browse.
+
+## What clients can do
+
+<Columns cols={2}>
+  <Card title="Browse & book sessions" icon="calendar-check">
+    View all upcoming sessions with availability. Book with one click. Full sessions show a **Join Waitlist** option.
+  </Card>
+  <Card title="Pay online" icon="credit-card">
+    Pay by card (or local payment methods via Stripe) at the time of booking.
+  </Card>
+  <Card title="Manage their bookings" icon="list-check">
+    View upcoming and past bookings, download calendar invites, and cancel within your cancellation policy.
+  </Card>
+  <Card title="Buy memberships & packs" icon="tag">
+    Purchase products (class packs, memberships) directly from the public portal.
+  </Card>
+</Columns>
+
+## Finding your public URL
+
+Your slug is set during onboarding. To find or copy your full public URL:
+
+1. Go to **Settings → Location**.
+2. Copy the **Public page** link.
+
+Share it anywhere — website, Instagram bio, WhatsApp, email signature.
+
+## Booking flow (client perspective)
+
+<Steps>
+  <Step title="Client visits your page">
+    They see a list of upcoming sessions with activity name, coach, time, location, price, and spots remaining.
+  </Step>
+  <Step title="Client selects a session and clicks Book">
+    If they're not logged in, they're prompted to create a free account or sign in.
+  </Step>
+  <Step title="Client pays (if session has a price)">
+    They complete payment via Stripe. A confirmation email is sent immediately.
+  </Step>
+  <Step title="Client receives confirmation">
+    The confirmation email includes session details, a calendar file attachment, and a link to cancel if needed.
+  </Step>
+</Steps>
+
+## Waitlist
+
+When a session is full, clients see a **Join Waitlist** button. They enter their name, email, and phone number. When a spot opens up (via cancellation or manual promotion from your dashboard), they're automatically moved to a confirmed booking and notified.
+
+Clients can also join a waitlist directly at:
+
+```
+app.book2befit.com/[slug]/waitlist
+```
+
+## Calendar export
+
+Clients can export their bookings to Apple Calendar, Google Calendar, or any `.ics`-compatible app from their bookings page at:
+
+```
+app.book2befit.com/[slug]/my-bookings
+```
+
+Your studio's session calendar can also be exported as an `.ics` feed for coaches and clients to subscribe to.
+
+## Products on the public page
+
+If you have products enabled (Growth plan or above), clients can browse and purchase them at:
+
+```
+app.book2befit.com/[slug]/products
+```
+
+This includes one-time class packs, recurring memberships, and any other products you've published.
+
+<Note>
+  Products on the public portal require the **Growth plan** or above. See [Plan Tiers](/reference/tiers).
+</Note>
+
+## Client accounts
+
+Clients create their account on your public page — not through a separate app. Their account is scoped to your studio. They can update their profile at:
+
+```
+app.book2befit.com/[slug]/account
+```
+
+## Feedback
+
+After a session, clients can leave a star rating and comment. This appears in your **Feedback** dashboard and helps you track satisfaction over time.
+
+The feedback link is sent automatically in the post-session email:
+
+```
+app.book2befit.com/[slug]/feedback
+```
+
+<Accordion title="Can I customise the look of my public page?">
+  Yes — on the **Growth plan** and above, you can customise the header, hero text, and footer branding from **Settings → Branding**.
+</Accordion>
+
+<Accordion title="Can clients book without creating an account?">
+  No — an account is required to complete a booking. Browsing sessions is public and requires no login.
+</Accordion>
+
+<Accordion title="How do I hide a session from the public page?">
+  Toggle **Allow public booking** OFF on the session. The session remains in your dashboard but won't appear on the public booking page.
+</Accordion>
