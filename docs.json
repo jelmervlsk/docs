@@ -19,6 +19,13 @@
               "index",
               "quickstart"
             ]
+          },
+          {
+            "group": "Your Account",
+            "pages": [
+              "getting-started/authentication",
+              "getting-started/onboarding"
+            ]
           }
         ]
       },
@@ -35,9 +42,20 @@
           {
             "group": "Studio Management",
             "pages": [
+              "core-features/activities",
               "core-features/clients",
               "core-features/payments",
+              "core-features/products",
               "core-features/team"
+            ]
+          },
+          {
+            "group": "Your Studio",
+            "pages": [
+              "core-features/location",
+              "core-features/spaces-equipment",
+              "core-features/analytics",
+              "core-features/feedback"
             ]
           },
           {
@@ -52,9 +70,16 @@
         "tab": "Reference",
         "groups": [
           {
-            "group": "Plans & Data",
+            "group": "Plans & Permissions",
             "pages": [
               "reference/tiers",
+              "reference/role-matrix",
+              "reference/settings"
+            ]
+          },
+          {
+            "group": "Data",
+            "pages": [
               "reference/database-schema"
             ]
           }

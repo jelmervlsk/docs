@@ -1,0 +1,71 @@
+---
+title: "Authentication"
+description: "Sign up, sign in, password recovery, and two-factor authentication."
+---
+
+## Creating an account
+
+Go to [app.book2befit.com/auth](https://app.book2befit.com/auth) and click **Create account**.
+
+- Email and password (minimum 6 characters) are required.
+- After submitting, you'll receive a confirmation email. Click the link to verify your address.
+- Once verified, you're redirected to the onboarding wizard to set up your studio.
+
+<Note>
+  If you sign up with an email that already has an account, you'll see: *"You already have an account. Please sign in instead."*
+</Note>
+
+## Signing in
+
+Navigate to [app.book2befit.com/auth](https://app.book2befit.com/auth) and enter your email and password.
+
+- **Studio owners and admins** are redirected to the dashboard after login.
+- **Coaches** are redirected to the dashboard (not the onboarding wizard).
+- If you haven't set up your organization yet, you'll be taken to the onboarding wizard.
+
+## Forgot password
+
+1. Click **Forgot password?** on the sign-in page.
+2. Enter your email address and submit.
+3. You'll receive a password reset email regardless of whether the email is registered — this prevents email enumeration.
+4. Click the link in the email and set a new password.
+5. Reset links expire after a short period. If the link is already used or expired, you'll see an error and can request a new one.
+
+## Two-factor authentication (2FA / MFA)
+
+2FA adds a second layer of security using a TOTP authenticator app (e.g. Google Authenticator, Authy, 1Password).
+
+### Enabling 2FA
+
+<Steps>
+  <Step title="Go to Settings → Security">
+    Navigate to **Settings → Security** in the dashboard.
+  </Step>
+  <Step title="Enable 2FA">
+    Click **Enable 2FA**. A QR code is shown.
+  </Step>
+  <Step title="Scan with your authenticator app">
+    Open your authenticator app, scan the QR code, and enter the 6-digit code to verify.
+  </Step>
+  <Step title="Confirmed">
+    2FA status updates to **Active**. You'll now be prompted for a code on every login.
+  </Step>
+</Steps>
+
+### Logging in with 2FA
+
+After entering your password, a second screen prompts for your TOTP code. Enter the current 6-digit code from your authenticator app. If the code is wrong, login is blocked.
+
+### Disabling 2FA
+
+Go to **Settings → Security** and click **Disable 2FA**. After disabling, sign out and back in to confirm MFA is no longer required.
+
+<Warning>
+  If you lose access to your authenticator app, contact support to recover your account. There are no backup codes at this time.
+</Warning>
+
+## Team member sign-in
+
+Coaches and admins sign in at the same URL. They are not taken through the onboarding wizard — they land directly on the dashboard with their role-limited view.
+
+If a team member hasn't accepted their invite yet, they won't be able to sign in under your organization. See [Team & Roles](/core-features/team) for the invite flow.

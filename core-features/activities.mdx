@@ -1,0 +1,70 @@
+---
+title: "Activities"
+description: "Define and manage the class types your studio offers."
+---
+
+Activities are the templates for your sessions — they define what a class is called, how long it lasts, how many people it fits, and whether it appears on your public booking page.
+
+Before you can create a session, you need at least one activity.
+
+## Creating an activity
+
+Go to **Activities** and click **+ New Activity**.
+
+| Field | Description |
+|---|---|
+| Name | Display name shown to clients (e.g. "HIIT Training", "Pilates") |
+| Description | Optional — shown on the public booking page |
+| Default duration | Pre-fills the session end time when creating a session |
+| Default capacity | Pre-fills the session capacity field |
+| Category | Free-text label (e.g. "Fitness", "Wellness") — used for filtering |
+| Difficulty level | Optional (e.g. "Beginner", "Intermediate", "Advanced") |
+| Space | Optionally link the activity to a specific space |
+| Private | If ON, the activity is hidden from the public booking page |
+| Show on public page | Controls whether clients can see and book this activity |
+| Active | Inactive activities are hidden from session creation |
+
+<Tip>
+  Set sensible defaults for duration and capacity — they speed up session creation significantly when you're scheduling a full week.
+</Tip>
+
+## Public vs. private activities
+
+| Setting | Visible on public page | Bookable by clients |
+|---|---|---|
+| `show_on_public_page` ON | ✓ | ✓ |
+| `is_private` ON | — | — |
+| `is_active` OFF | — | — |
+
+Use **private** for 1:1 PT sessions you book manually. Use **inactive** to archive an activity you no longer offer.
+
+## Editing an activity
+
+Click any activity in the list to expand it. Edit any field inline and click **Save**. Changes apply to future sessions — existing sessions are not affected.
+
+## Bulk actions
+
+Select multiple activities using the checkboxes and use **Bulk Delete** to remove them at once. You can also **Export CSV** to download your full activity catalogue.
+
+<Warning>
+  Deleting an activity does not delete existing sessions linked to it. Those sessions remain scheduled — the activity name is stored on the session at creation time.
+</Warning>
+
+## Activity categories
+
+Categories are free-text — there's no fixed list. Use whatever makes sense for your studio. Examples:
+
+- Fitness · Cardio · Strength
+- Mind & Body · Yoga · Pilates
+- Recovery · Stretching · Mobility
+- Dance · Boxing · Martial Arts
+
+Categories are used for filtering on the public booking page, so consistent naming helps clients find what they're looking for.
+
+<Accordion title="Can I reorder activities?">
+  Not currently — activities are sorted by creation date. Renaming them with a number prefix (e.g. "1. HIIT", "2. Pilates") is a workaround to control order.
+</Accordion>
+
+<Accordion title="What happens to sessions if I deactivate an activity?">
+  Existing scheduled sessions are not affected. Deactivating an activity only prevents it from appearing in the session creation form going forward.
+</Accordion>

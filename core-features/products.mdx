@@ -1,0 +1,86 @@
+---
+title: "Products & Memberships"
+description: "Sell class packs, memberships, and subscriptions directly from your studio."
+---
+
+Products let you sell recurring memberships, class packs, and one-time purchases to your clients — with payments handled automatically via Stripe.
+
+<Note>
+  The entire Products section requires the **Growth plan** or above. On Starter, navigating to `/products` shows an upgrade prompt. See [Plan Tiers](/reference/tiers).
+</Note>
+
+## Product types
+
+| Type | Description |
+|---|---|
+| **One-time** | A single purchase — e.g. a 10-class pack or a drop-in pass |
+| **Recurring** | A subscription billed monthly or annually — e.g. an unlimited membership |
+
+## Creating a product
+
+Go to **Products** and click **+ New Product**.
+
+1. Enter a product name and optional description.
+2. Set the product type (one-time or recurring).
+3. Add one or more **pricing tiers** (e.g. Monthly at €49, Annual at €399).
+4. Toggle **Is Default** on the pricing tier you want pre-selected for clients.
+5. Click **Save**.
+
+<Tip>
+  You can add multiple pricing tiers to a single product — useful for offering monthly vs. annual billing on the same membership.
+</Tip>
+
+## Syncing with Stripe
+
+After creating a product, click **Sync to Stripe** to push it to your connected Stripe account. This is required before clients can purchase it online.
+
+To update a Stripe-synced product (e.g. change the price), edit it in Book2befit and click **Sync to Stripe** again.
+
+## Archiving a product
+
+To stop selling a product without deleting it, use **Archive**. Archived products:
+
+- No longer appear on the public products page
+- Remain visible in the dashboard for historical reference
+- Existing active subscriptions are not cancelled — clients continue to be billed until they cancel
+
+## Assigning a product to a client
+
+You can manually assign a product to a client from their profile:
+
+1. Open the client from **Clients**.
+2. Click **Assign Product**.
+3. Select the product and pricing tier.
+4. Save.
+
+This is useful for grandfathered pricing, manual onboarding, or free trials.
+
+## Products on the public page
+
+Clients can browse and purchase products at:
+
+```
+app.book2befit.com/[slug]/products
+```
+
+They'll need to be logged in to complete a purchase. After purchase, the product appears under their account.
+
+## Managing subscriptions
+
+Active client subscriptions appear in **Products → Subscriptions**. From here you can:
+
+- View subscription status (Active · Past Due · Cancelled)
+- Cancel a subscription on behalf of a client
+- Reactivate a cancelled subscription
+
+<Accordion title="What happens if a subscription payment fails?">
+  Stripe retries the charge according to your Stripe retry settings (typically 3–4 attempts over 7 days). If all retries fail, the subscription moves to **Past Due**. You'll see this in the subscriptions list.
+</Accordion>
+
+<Accordion title="Can I offer a free trial?">
+  Free trials are configured at the Stripe product level. Set a trial period in your Stripe dashboard for the relevant price — it flows through to Book2befit automatically.
+</Accordion>
+
+<Accordion title="Can clients cancel their own subscription?">
+  Yes — from their account page at `app.book2befit.com/[slug]/account`, clients can view and cancel their active subscriptions.
+</Accordion>

@@ -1,0 +1,67 @@
+---
+title: "Settings"
+description: "Organization, calendar, and security settings for your studio."
+---
+
+Settings is where you configure your organization at a global level. Navigate to **Settings** in the dashboard sidebar.
+
+## Organization tab
+
+| Setting | Description |
+|---|---|
+| Studio name | Your organization's display name, shown in the dashboard and on invoices |
+| Timezone | Default timezone for the organization. Individual locations can override this. |
+| Currency | The currency used for pricing, invoices, and Stripe transactions |
+| VAT number | Appears on invoices if set |
+| Registration number | Optional — for legal/invoicing purposes |
+| Billing email | Where billing notifications and invoices are sent |
+
+## Calendar tab
+
+Controls how your session calendar behaves.
+
+| Setting | Description |
+|---|---|
+| Week starts on | Monday or Sunday — affects the calendar grid layout |
+| Default session duration | Pre-fills the end time when creating sessions |
+| Default session capacity | Pre-fills the capacity field when creating sessions |
+| Allow coaches to create sessions | Toggle ON to let coaches create sessions from their schedule view |
+| Cancellation window | Minimum hours before a session that a client can cancel. E.g. set to 24 to block cancellations within 24 hours. |
+
+<Tip>
+  Setting a cancellation window protects your revenue — late cancellations on paid sessions won't qualify for an automatic refund if they fall inside the window.
+</Tip>
+
+## Security tab
+
+Manage your own account security — not organization-wide settings.
+
+| Setting | Description |
+|---|---|
+| Change password | Update your account password |
+| Two-factor authentication | Enable or disable TOTP-based 2FA. See [Authentication](/getting-started/authentication) for setup steps. |
+
+<Note>
+  2FA settings apply to your individual account only. You cannot force 2FA for all team members from this screen — each team member manages their own security settings.
+</Note>
+
+## Billing tab
+
+Manage your subscription plan, payment method, and billing history.
+
+- View your current plan and next renewal date
+- Upgrade or downgrade your plan
+- Switch between monthly and annual billing
+- Download past invoices
+
+See [Plan Tiers](/reference/tiers) for a full feature comparison.
+
+## Danger zone
+
+At the bottom of the Organization tab is the **Danger Zone** — actions that are irreversible:
+
+- **Delete organization** — permanently removes your organization, all sessions, bookings, clients, and data. This cannot be undone.
+
+<Warning>
+  Deleting your organization also cancels any active Stripe subscriptions for your clients. Make sure clients are notified before proceeding.
+</Warning>

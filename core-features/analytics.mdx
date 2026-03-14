@@ -1,0 +1,84 @@
+---
+title: "Analytics & Reporting"
+description: "Track studio performance — bookings, revenue, occupancy, and client growth."
+---
+
+Book2befit gives you a live view of your studio's performance through the Analytics dashboard and the Reporting tool.
+
+<Note>
+  Analytics requires the **Growth plan** or above. Advanced analytics requires **Business** or above. Reporting requires **Enterprise**. See [Plan Tiers](/reference/tiers).
+</Note>
+
+## Dashboard overview
+
+The main **Dashboard** at `/dashboard` is available on all plans and shows a real-time snapshot:
+
+| KPI card | Description |
+|---|---|
+| Total clients | All registered clients in your org |
+| Active clients | Clients with at least one booking in the selected period |
+| Sessions today | Sessions scheduled for today |
+| Bookings today | Bookings made today |
+| Checked in today | Clients who attended today |
+| Sessions this week | Total sessions in the current week |
+| Bookings this week | Total bookings in the current week |
+
+## Analytics (Growth+)
+
+Navigate to **Analytics** for deeper insights. Use the period selector to filter by: **7d · 14d · 30d · 90d · 365d**.
+
+### Charts
+
+| Chart | What it shows |
+|---|---|
+| Bookings & Sessions Trend | Bookings vs. sessions over time — spot busy periods and growth |
+| Top Activities | Which class types are most popular by booking volume |
+| Booking Status Distribution | Breakdown of Confirmed · Cancelled · Checked-in · No-show |
+| New Client Registrations | Client growth over time |
+
+### KPIs (Growth+)
+
+| KPI | Description |
+|---|---|
+| Total Revenue | Sum of all completed payments in the period |
+| Avg Revenue per Booking | Total revenue ÷ total bookings |
+| Total Bookings | All bookings created in the period |
+| Occupancy Rate | `current_bookings / capacity` averaged across sessions |
+| Check-ins | Clients who were marked as attended |
+| No-shows | Clients who booked but didn't attend |
+
+## Advanced analytics (Business+)
+
+Business plan and above unlocks deeper analysis including:
+
+- Revenue breakdown by payment method (Online vs. At Location)
+- Revenue trend charts
+- Capacity utilisation by location or space
+- Payment method distribution (pie chart)
+
+## Reporting (Enterprise)
+
+Enterprise organizations have access to the **Reporting** tool at `/reporting`, which generates downloadable reports:
+
+- **Sessions report** — full session history with bookings and revenue
+- **Client report** — client list with booking counts and lifetime value
+- **Revenue report** — financial summary by period, activity, or location
+
+Click **Generate Report**, select the report type and date range, and download as CSV or PDF.
+
+## Exporting data
+
+On any plan, you can export raw data from individual sections:
+
+- **Sessions** → Export Sessions CSV
+- **Bookings** → Export CSV
+- **Clients** → Export CSV
+- **Payments** → Export CSV (via Payments dashboard)
+
+<Accordion title="Is data real-time?">
+  Yes — KPI cards and charts reflect live data from the database. There is no caching delay.
+</Accordion>
+
+<Accordion title="Can I see analytics for a specific location?">
+  Location-level filtering is available in the Advanced Analytics section (Business+). On Growth, analytics are aggregated across all locations.
+</Accordion>
